@@ -51,28 +51,18 @@ def predict_img(net,
 
 
 def get_args():
-    parser = argparse.ArgumentParser(description='Predict masks from input images',
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--model', '-m', default='MODEL.pth',
-                        metavar='FILE',
-                        help="Specify the file in which the model is stored")
-    parser.add_argument('--input', '-i', metavar='INPUT', nargs='+',
-                        help='filenames of input images', required=True)
-
-    parser.add_argument('--output', '-o', metavar='INPUT', nargs='+',
-                        help='Filenames of ouput images')
-    parser.add_argument('--viz', '-v', action='store_true',
-                        help="Visualize the images as they are processed",
-                        default=False)
+    parser = argparse.ArgumentParser(description='Predict masks from input images')
+    parser.add_argument('--model', '-m', default='models/MODEL.pth')
+    parser.add_argument('--input', '-i', default=["output/00021.png"])
+    parser.add_argument('--output', '-o', default=None)
+    parser.add_argument('--viz', '-v', default=False)
     parser.add_argument('--no-save', '-n', action='store_true',
                         help="Do not save the output masks",
                         default=False)
     parser.add_argument('--mask-threshold', '-t', type=float,
                         help="Minimum probability value to consider a mask pixel white",
                         default=0.5)
-    parser.add_argument('--scale', '-s', type=float,
-                        help="Scale factor for the input images",
-                        default=0.5)
+    parser.add_argument('--scale', '-s', default=0.5)
 
     return parser.parse_args()
 
@@ -107,7 +97,7 @@ if __name__ == "__main__":
 
     logging.info("Loading model {}".format(args.model))
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     logging.info(f'Using device {device}')
     net.to(device=device)
     net.load_state_dict(torch.load(args.model, map_location=device))

@@ -17,7 +17,7 @@ def segmentation(image_path):
     names = re.findall(r'[^\\/:*?"<>|\r\n]+$', image_path)
     mask_path = output_path + names[0]
     change_channels_to_rgb(image_path)
-    cmd_predict = "python predict.py -i {0} -o {1}".format(image_path, mask_path)
+    cmd_predict = "python3 predict.py -i {0} -o {1}".format(image_path, mask_path)
     os.system(cmd_predict)
     mask = Image.open(mask_path)
     img = Image.open(image_path)
